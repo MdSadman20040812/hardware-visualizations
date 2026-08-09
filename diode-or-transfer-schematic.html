@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Diode-OR Automatic Transfer Switch — Schematic</title>
+<style>
+  body { margin:0; background:#ffffff; display:flex; justify-content:center; }
+  svg { max-width:1280px; width:100%; height:auto; }
+  text { font-family:'Segoe UI', Arial, sans-serif; }
+  .title   { font-size:22px; font-weight:700; fill:#1a202c; }
+  .subtitle{ font-size:13px; fill:#4a5568; }
+  .desig   { font-size:12.5px; font-weight:700; fill:#2d3748; }
+  .value   { font-size:12px; fill:#718096; }
+  .note    { font-size:12.5px; fill:#2d3748; }
+  .notetxt { font-size:12.5px; fill:#2d3748; }
+  .buslbl  { font-size:13px; font-weight:700; fill:#c53030; }
+  .wire    { stroke:#2d3748; stroke-width:2; fill:none; }
+  .buswire { stroke:#c53030; stroke-width:3; fill:none; }
+  .sym     { stroke:#2d3748; stroke-width:2; fill:none; }
+  .symfill { fill:#2d3748; stroke:none; }
+  .dot     { fill:#2d3748; stroke:none; }
+  .busdot  { fill:#c53030; stroke:none; }
+</style>
+</head>
+<body>
+<svg viewBox="0 0 1280 660" xmlns="http://www.w3.org/2000/svg">
+
+  <!-- ===== Titles ===== -->
+  <text class="title" x="40" y="34">Diode-OR Automatic Transfer Switch (Pack ↔ Aux)</text>
+  <text class="subtitle" x="40" y="56">Highest voltage wins — no comparator, no MOSFET. Zener clamps faults above 15 V. Bus sits one diode drop (~0.7 V) below the winning source.</text>
+
+  <!-- ===== LEFT: Pack simulator (battery + pot) ===== -->
+  <!-- top wire from BAT+ to pot top -->
+  <path class="wire" d="M80,100 L80,70 L200,70 L200,92"/>
+  <!-- BAT_Pack -->
+  <line class="sym" x1="80" y1="100" x2="80" y2="106"/>
+  <line class="sym" x1="64" y1="108" x2="96" y2="108" stroke-width="2.5"/>
+  <line class="sym" x1="72" y1="118" x2="88" y2="118" stroke-width="5"/>
+  <line class="sym" x1="80" y1="120" x2="80" y2="150"/>
+  <text class="desig" x="102" y="112">+</text>
+  <text class="desig" x="102" y="148">−</text>
+  <text class="desig" x="56" y="122" text-anchor="end">BAT_Pack</text>
+  <text class="value" x="56" y="138" text-anchor="end">12.6 V</text>
+  <!-- bottom wire BAT− to ground + pot bottom -->
+  <path class="wire" d="M80,150 L80,240 L200,240 L200,208"/>
+  <circle class="dot" cx="80" cy="240" r="3.5"/>
+  <!-- ground at (80,240) -->
+  <line class="sym" x1="80" y1="240" x2="80" y2="246"/>
+  <line class="sym" x1="68" y1="246" x2="92" y2="246"/>
+  <line class="sym" x1="72" y1="252" x2="88" y2="252"/>
+  <line class="sym" x1="76" y1="258" x2="84" y2="258"/>
+
+  <!-- POT-HG body -->
+  <rect class="sym" x="190" y="100" width="20" height="100" fill="#ffffff"/>
+  <line class="sym" x1="200" y1="92" x2="200" y2="100"/>
+  <line class="sym" x1="200" y1="200" x2="200" y2="208"/>
+  <!-- wiper arrow (points into resistor) -->
+  <line class="sym" x1="238" y1="150" x2="216" y2="150"/>
+  <polygon class="symfill" points="216,145 216,155 206,150"/>
+  <text class="desig" x="222" y="104">POT-HG</text>
+  <text class="value" x="222" y="120">10 kΩ</text>
+  <text class="value" x="222" y="136" font-size="10.5">wiper = simulated pack V</text>
+
+  <!-- wiper node wire to D1 -->
+  <path class="wire" d="M238,150 L362,150"/>
+  <circle class="dot" cx="300" cy="150" r="3.5"/>
+
+  <!-- V1 meter (pack / wiper) -->
+  <line class="wire" x1="300" y1="150" x2="300" y2="188"/>
+  <circle class="sym" cx="300" cy="210" r="22" fill="#ffffff"/>
+  <text class="desig" x="300" y="216" text-anchor="middle" font-size="16">V</text>
+  <line class="wire" x1="300" y1="232" x2="300" y2="258"/>
+  <line class="sym" x1="300" y1="258" x2="300" y2="264"/>
+  <line class="sym" x1="288" y1="264" x2="312" y2="264"/>
+  <line class="sym" x1="292" y1="270" x2="308" y2="270"/>
+  <line class="sym" x1="296" y1="276" x2="304" y2="276"/>
+  <text class="desig" x="332" y="206">V1 · PACK</text>
+  <text class="value" x="332" y="222">(wiper node)</text>
+
+  <!-- D1 (pack diode) -->
+  <polygon class="symfill" points="362,140 362,160 388,150"/>
+  <line class="sym" x1="390" y1="138" x2="390" y2="162" stroke-width="3"/>
+  <text class="desig" x="376" y="128" text-anchor="middle">D1 · 1N4007</text>
+  <!-- cathode lead into bus rail corner -->
+  <path class="buswire" d="M390,150 L520,150"/>
+
+  <!-- ===== LEFT: Aux battery + D2 ===== -->
+  <!-- BAT_Aux -->
+  <line class="sym" x1="80" y1="330" x2="80" y2="336"/>
+  <line class="sym" x1="64" y1="338" x2="96" y2="338" stroke-width="2.5"/>
+  <line class="sym" x1="72" y1="348" x2="88" y2="348" stroke-width="5"/>
+  <line class="sym" x1="80" y1="350" x2="80" y2="420"/>
+  <text class="desig" x="102" y="342">+</text>
+  <text class="desig" x="102" y="414">−</text>
+  <text class="desig" x="56" y="364" text-anchor="end">BAT_Aux</text>
+  <text class="value" x="56" y="380" text-anchor="end">12 V</text>
+  <!-- ground at (80,420) -->
+  <line class="sym" x1="80" y1="420" x2="80" y2="426"/>
+  <line class="sym" x1="68" y1="426" x2="92" y2="426"/>
+  <line class="sym" x1="72" y1="432" x2="88" y2="432"/>
+  <line class="sym" x1="76" y1="438" x2="84" y2="438"/>
+  <!-- top wire to D2 -->
+  <path class="wire" d="M80,330 L80,300 L362,300"/>
+  <!-- D2 (aux diode) -->
+  <polygon class="symfill" points="362,290 362,310 388,300"/>
+  <line class="sym" x1="390" y1="288" x2="390" y2="312" stroke-width="3"/>
+  <text class="desig" x="376" y="280" text-anchor="middle">D2 · 1N4007</text>
+  <!-- D2 cathode up into bus rail -->
+  <path class="buswire" d="M390,300 L520,300 L520,150"/>
+
+  <!-- ===== BUS RAIL (red) ===== -->
+  <path class="buswire" d="M520,150 L1040,150"/>
+  <circle class="busdot" cx="520" cy="150" r="4"/>
+  <circle class="busdot" cx="640" cy="150" r="4"/>
+  <circle class="busdot" cx="780" cy="150" r="4"/>
+  <circle class="busdot" cx="920" cy="150" r="4"/>
+  <circle class="busdot" cx="1040" cy="150" r="4"/>
+  <text class="buslbl" x="532" y="138">BUS</text>
+  <text class="value" x="572" y="138">≈ winning source − 0.7 V</text>
+
+  <!-- ===== Branch 1: Zener clamp (x=640) ===== -->
+  <line class="wire" x1="640" y1="150" x2="640" y2="168"/>
+  <rect class="sym" x="632" y="168" width="16" height="40" fill="#ffffff"/>
+  <line class="wire" x1="640" y1="208" x2="640" y2="236"/>
+  <!-- zener cathode bar (with wings) facing bus -->
+  <line class="sym" x1="628" y1="238" x2="652" y2="238" stroke-width="3"/>
+  <line class="sym" x1="628" y1="238" x2="624" y2="234" stroke-width="2.5"/>
+  <line class="sym" x1="652" y1="238" x2="656" y2="242" stroke-width="2.5"/>
+  <polygon class="symfill" points="630,264 650,264 640,240"/>
+  <line class="wire" x1="640" y1="264" x2="640" y2="300"/>
+  <line class="sym" x1="640" y1="300" x2="640" y2="306"/>
+  <line class="sym" x1="628" y1="306" x2="652" y2="306"/>
+  <line class="sym" x1="632" y1="312" x2="648" y2="312"/>
+  <line class="sym" x1="636" y1="318" x2="644" y2="318"/>
+  <text class="desig" x="664" y="192">R_zener · 220 Ω</text>
+  <text class="desig" x="664" y="252">D3 · ZENER 15 V</text>
+  <text class="value" x="664" y="268">cathode faces BUS (reverse-biased)</text>
+
+  <!-- ===== Branch 2: load (x=780) ===== -->
+  <line class="wire" x1="780" y1="150" x2="780" y2="158"/>
+  <rect class="sym" x="772" y="158" width="16" height="50" fill="#ffffff"/>
+  <line class="wire" x1="780" y1="208" x2="780" y2="240"/>
+  <line class="sym" x1="780" y1="240" x2="780" y2="246"/>
+  <line class="sym" x1="768" y1="246" x2="792" y2="246"/>
+  <line class="sym" x1="772" y1="252" x2="788" y2="252"/>
+  <line class="sym" x1="776" y1="258" x2="784" y2="258"/>
+  <text class="desig" x="804" y="180">R_load · 220 Ω</text>
+  <text class="value" x="804" y="196">(combined 5-zone draw)</text>
+
+  <!-- ===== Branch 3: LED + R_led (x=920) ===== -->
+  <line class="wire" x1="920" y1="150" x2="920" y2="162"/>
+  <polygon class="symfill" points="910,162 930,162 920,188"/>
+  <line class="sym" x1="908" y1="190" x2="932" y2="190" stroke-width="3"/>
+  <!-- light arrows -->
+  <line class="sym" x1="924" y1="168" x2="936" y2="156" stroke-width="1.5"/>
+  <polygon class="symfill" points="936,156 928,157 933,164"/>
+  <line class="sym" x1="930" y1="174" x2="942" y2="162" stroke-width="1.5"/>
+  <polygon class="symfill" points="942,162 934,163 939,170"/>
+  <line class="wire" x1="920" y1="190" x2="920" y2="218"/>
+  <rect class="sym" x="912" y="218" width="16" height="50" fill="#ffffff"/>
+  <line class="wire" x1="920" y1="268" x2="920" y2="300"/>
+  <line class="sym" x1="920" y1="300" x2="920" y2="306"/>
+  <line class="sym" x1="908" y1="306" x2="932" y2="306"/>
+  <line class="sym" x1="912" y1="312" x2="928" y2="312"/>
+  <line class="sym" x1="916" y1="318" x2="924" y2="318"/>
+  <text class="desig" x="946" y="178">LED1 · RED</text>
+  <text class="value" x="946" y="194">bus-powered indicator</text>
+  <text class="desig" x="946" y="248">R_led · 470 Ω</text>
+
+  <!-- ===== Branch 4: V2 bus meter (x=1040) ===== -->
+  <line class="wire" x1="1040" y1="150" x2="1040" y2="188"/>
+  <circle class="sym" cx="1040" cy="210" r="22" fill="#ffffff"/>
+  <text class="desig" x="1040" y="216" text-anchor="middle" font-size="16">V</text>
+  <line class="wire" x1="1040" y1="232" x2="1040" y2="260"/>
+  <line class="sym" x1="1040" y1="260" x2="1040" y2="266"/>
+  <line class="sym" x1="1028" y1="266" x2="1052" y2="266"/>
+  <line class="sym" x1="1032" y1="272" x2="1048" y2="272"/>
+  <line class="sym" x1="1036" y1="278" x2="1044" y2="278"/>
+  <text class="desig" x="1070" y="214">V2 · BUS</text>
+
+  <text class="value" x="660" y="345">* all ground symbols are one common net</text>
+
+  <!-- ===== Quick-check box (bottom left) ===== -->
+  <rect x="40" y="490" width="480" height="130" rx="8" fill="#f7fafc" stroke="#cbd5e0" stroke-dasharray="5,4"/>
+  <text class="desig" x="56" y="514" font-size="13.5">Quick check (V2 = bus meter)</text>
+  <text class="note" x="56" y="538">• POT near full (pack ≈ 12.6 V): V2 ≈ 11.9 V → pack is supplying the bus</text>
+  <text class="note" x="56" y="560">• Drag POT below 12 V: V2 stops falling, holds ≈ 11.3 V → Aux has taken over</text>
+  <text class="note" x="56" y="582">• LED1 stays lit through the whole sweep = seamless handoff</text>
+  <text class="note" x="56" y="604">• Drag POT back up: V2 resumes tracking the pack</text>
+
+  <!-- ===== How-it-works box (bottom right) ===== -->
+  <rect x="560" y="380" width="680" height="240" rx="8" fill="#f7fafc" stroke="#cbd5e0" stroke-dasharray="5,4"/>
+  <text class="desig" x="576" y="404" font-size="13.5">How it works / what to watch</text>
+  <text class="notetxt" x="576" y="428">• Whichever source is higher forward-biases its diode; the other reverse-biases and blocks.</text>
+  <text class="notetxt" x="576" y="450">• No control circuit — the crossover at pack ≈ Aux (12 V) is pure diode physics.</text>
+  <text class="notetxt" x="576" y="472">• D3 (15 V Zener) is silent in normal operation; it only clamps a fault over-voltage.</text>
+  <text class="notetxt" x="576" y="494">• Zener test: set Aux = 20 V → V2 clamps near 15 V instead of ~19.3 V. Reset to 12 V after.</text>
+  <text class="notetxt" x="576" y="516">• D3 is the one component wired "backwards" vs. a normal diode — cathode to the bus.</text>
+  <text class="notetxt" x="576" y="538">• Trade-off vs. comparator version: no hysteresis — noise right at the crossover could</text>
+  <text class="notetxt" x="576" y="558">  toggle sources, and the "which source is active" flag must be inferred by the ESP32 ADC.</text>
+  <text class="notetxt" x="576" y="586" font-weight="700">Parts: 2× 1N4007 · 1× Zener 15 V (or 1N4744A) · 3× RES · 1× POT-HG · 2× BATTERY · 1× LED-RED</text>
+
+</svg>
+</body>
+</html>
