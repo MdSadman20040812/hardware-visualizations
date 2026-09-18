@@ -5,27 +5,52 @@
 ![Electronics](https://img.shields.io/badge/Electronics-FF6F00?style=for-the-badge&logo=arduino&logoColor=white)
 ![Schematics](https://img.shields.io/badge/Schematics-2E7D32?style=for-the-badge&logo=svg&logoColor=white)
 ![SVG](https://img.shields.io/badge/SVG-FFB13B?style=for-the-badge&logo=svg&logoColor=white)
-![BJT](https://img.shields.io/badge/preference-BJT/diode-blueviolet?style=for-the-badge)
+![BJT](https://img.shields.io/badge/Preference-BJT/diode-blueviolet?style=for-the-badge)
+![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)
 
 ---
 
-## Featured
+## 🖼️ Featured: Diode-OR Automatic Transfer Switch
 
-### Diode-OR Automatic Transfer Switch
+```
+        Solar (+) ──►|──┬──► Load (+)
+        [D1]        │  │
+                     │  ├── Zener Clamp ── GND
+        Grid (+) ──►|──┤
+        [D2]           │
+                        └── Darlington Driver ── Load Control
+        Battery (+) ─►|─┘
+        [D3]
 
-Highest-voltage-wins power path selection using diode OR-ing, Zener clamps, and Darlington driver. No comparators, no MOSFETs — just robust analog design.
+        Highest-voltage source wins automatically
+```
+
+**Interactive features:** Inspect nodes, hover for voltage values, trace signal flow.
 
 **[→ View Schematic](diode-or-transfer-schematic.html)**
 
-### Load-Shedding Line Fuse Monitor
+---
 
-Discrete-transistor fuse-mounted voltage monitor with Schmitt trigger and latching alert. Designed for Bangladesh utility conditions.
+## 🖼️ Featured: Load-Shedding Line Fuse Monitor
+
+```
+        Line ──┬── R1 (100K) ──┬── BJT Base
+              │                │
+              └── Fuse ────────┴── BJT Collector ── LED + Buzzer
+              (when intact)         (latching alert)
+
+        Schmitt trigger:  hysteresis prevents chatter
+        Latch:  stays triggered until manually reset
+        Standby: < 500 µA quiescent draw
+```
+
+Designed for **Bangladesh utility conditions** — load-shedding makes fuse monitoring critical.
 
 **[→ View Schematic](LoadShedding_Monitor.html)**
 
 ---
 
-## Design Principles
+## 🎨 Design Principles
 
 | Principle | Why |
 |-----------|-----|
@@ -36,17 +61,34 @@ Discrete-transistor fuse-mounted voltage monitor with Schmitt trigger and latchi
 
 ---
 
-## Structure
+## 🚀 Quick Start
 
-```
-hardware-visualizations/
-├── README.md
-├── diode-or-transfer-schematic.html
-└── LoadShedding_Monitor.html
+```bash
+# Just open in a browser
+start diode-or-transfer-schematic.html     # Windows
+start LoadShedding_Monitor.html
 ```
 
 ---
 
-## License
+## 📁 Project Structure
+
+```
+hardware-visualizations/
+├── README.md
+├── diode-or-transfer-schematic.html    # Diode-OR automatic transfer switch
+│   ├── Interactive SVG schematic
+│   ├── Hover tooltips for values
+│   └── Signal flow animation
+├── LoadShedding_Monitor.html           # Fuse monitor with latching alert
+│   ├── Discrete-transistor design
+│   ├── Schmitt trigger visualization
+   └── Interactive node inspection
+└── README.md
+```
+
+---
+
+## 📄 License
 
 MIT © Md Sadman Bin Masud
